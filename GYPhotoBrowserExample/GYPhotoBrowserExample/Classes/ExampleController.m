@@ -31,7 +31,7 @@
     NSMutableArray *photoModels = @[].mutableCopy;
     int tag = 1;
     for (NSString *imageName in self.photos) {
-        GYPhotoModel *model = [GYPhotoModel photoModelWithImageName:imageName fromView:[self.view viewWithTag:tag++] originalW:400 originalH:480 + arc4random_uniform(300)];
+        GYPhotoModel *model = [GYPhotoModel photoModelWithImageName:imageName fromView:[self.view viewWithTag:tag++] originalW:GYPhotoBrowserViewScreenW originalH:480 + arc4random_uniform(300)];
         [photoModels addObject:model];
     }
     

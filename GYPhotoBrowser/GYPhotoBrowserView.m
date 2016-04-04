@@ -9,6 +9,8 @@
 #import "GYPhotoBrowserView.h"
 #import "UIImageView+WebCache.h"
 
+#define GYMinimumLineSpacing 20
+
 @interface GYPhotoBrowserView() <UICollectionViewDataSource,UICollectionViewDelegate,UIGestureRecognizerDelegate>
 @property (nonatomic , weak) UICollectionView *collectionView;
 @property (nonatomic , weak) UICollectionViewFlowLayout *flowLayout;
@@ -30,26 +32,26 @@ static NSString * const cellId = @"photoCell";
     }
     return self;
 }
+
 - (void)setupViews
 {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.itemSize = CGSizeMake(GYPhotoBrowserViewScreenW, GYPhotoBrowserViewScreenH);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    flowLayout.minimumLineSpacing = 0;
+    flowLayout.minimumLineSpacing = GYMinimumLineSpacing;
     self.flowLayout = flowLayout;
     
-    
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0,GYPhotoBrowserViewScreenW, GYPhotoBrowserViewScreenH) collectionViewLayout:flowLayout];
+    // *** 设置行间距＋分页时，collectionView的宽度 ＝ 行间距 ＋ cell.width
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0,flowLayout.itemSize.width + GYMinimumLineSpacing, GYPhotoBrowserViewScreenH) collectionViewLayout:flowLayout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.pagingEnabled = YES;
-    collectionView.minimumZoomScale = 1.0;
-    collectionView.maximumZoomScale = 1.5;
+    collectionView.backgroundColor = [UIColor blackColor];
     [collectionView registerClass:[GYPhotoCell class] forCellWithReuseIdentifier:cellId];
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-    
+    // 头部指示器
     UILabel *indexLabel = [[UILabel alloc] initWithFrame:CGRectMake((GYPhotoBrowserViewScreenW - 200) * 0.5,
                                                                     35,
                                                                     180, 60)];
@@ -62,7 +64,6 @@ static NSString * const cellId = @"photoCell";
     [self addSubview:indexLabel];
     self.indexLabel = indexLabel;
 }
-
 
 - (void)setPhotos:(NSMutableArray *)photos
 {
@@ -94,6 +95,11 @@ static NSString * const cellId = @"photoCell";
         [weakSelf dismissWith:indexPath.row];
     };
     return photoCell;
+}
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(GYMinimumLineSpacing, GYPhotoBrowserViewScreenH);
 }
 
 - (void)show
@@ -156,7 +162,7 @@ static NSString * const cellId = @"photoCell";
     
     self.flowLayout.itemSize = CGSizeMake(GYPhotoBrowserViewScreenW, GYPhotoBrowserViewScreenH);
     self.frame = CGRectMake(0, 0, GYPhotoBrowserViewScreenW, GYPhotoBrowserViewScreenH);
-    self.collectionView.frame = self.frame;
+    self.collectionView.frame = CGRectMake(0, 0, self.frame.size.width + GYMinimumLineSpacing, self.frame.size.height);
     self.indexLabel.frame = CGRectMake((GYPhotoBrowserViewScreenW - 200) * 0.5,
                                        35,
                                        180, 60);

@@ -101,13 +101,6 @@
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
-//    if (scrollView.contentSize.width > GYPhotoBrowserViewScreenW && scrollView.contentSize.height > GYPhotoBrowserViewScreenH) {
-//        self.photo.center = CGPointMake(scrollView.contentSize.width*0.5, scrollView.contentSize.height*0.5);
-//    } else {
-//        self.photo.center = CGPointMake(GYPhotoBrowserViewScreenW*0.5, GYPhotoBrowserViewScreenH*0.5);
-//    }
-    
-    
     if (scrollView.contentSize.width > GYPhotoBrowserViewScreenW && scrollView.contentSize.height > GYPhotoBrowserViewScreenH) {
         self.photo.center = CGPointMake(scrollView.contentSize.width*0.5,  scrollView.contentSize.height*0.5);
     } else if (scrollView.contentSize.width > GYPhotoBrowserViewScreenW && scrollView.contentSize.height < GYPhotoBrowserViewScreenH) {
@@ -117,7 +110,6 @@
     } else {
         self.photo.center = scrollView.center;
     }
-    
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
